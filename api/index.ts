@@ -3,9 +3,11 @@ const mongoose = require('mongoose');
 const { MongoClient } = require('mongodb');
 const app = express();
 require('dotenv').config();
-const port = 3000;
-const cosmosDbConnectionString = process.env.COSMOS_DB_CONNECTION_STRING;
 
+// Use the environment variable PORT if it exists, otherwise default to 3000
+const port = process.env.PORT || 3000; 
+
+const cosmosDbConnectionString = process.env.COSMOS_DB_CONNECTION_STRING;
 
 // Connect to MongoDB (Cosmos DB)
 mongoose.connect(cosmosDbConnectionString, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -20,9 +22,6 @@ mongoose.connect(cosmosDbConnectionString, { useNewUrlParser: true, useUnifiedTo
 app.use(express.json());
 
 // Route to fetch all collections in the 'portfolio' database
-
-
-// Sample route
 app.get('/', (req, res) => {
   res.send('Hello from Express and Cosmos DB!');
 });
@@ -56,7 +55,6 @@ app.get('/portfolio', async (req, res) => {
       res.status(500).json({ message: 'Error fetching documents from the resume collection', error: err.message });
     }
   });
-  
   
 // Start the server
 app.listen(port, () => {
